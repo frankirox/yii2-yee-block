@@ -42,3 +42,32 @@ Configuration
 	],
 ],
 ```
+
+Usage
+---
+
+- Widget namespace:
+```php
+use yeesoft\block\models\Block;
+```
+
+- Render HTML Block by slug:
+
+```php
+echo Block::getHtml('block-slug'); 
+```
+
+- You can use variables in your HTML Blocks. Example:
+  
+  example of block with variables:
+```php
+<div class="some-class">
+    <a href="{{link}}">{{title}}</a>
+</div>
+```
+  
+  render block with variables:
+```php
+echo Block::getHtml('block-slug', ['link' => 'http://www.example.com/', 'title' => 'Example Site']); 
+```
+
