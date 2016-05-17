@@ -1,16 +1,14 @@
 <?php
 
 use yeesoft\helpers\Html;
-use yeesoft\helpers\LanguageHelper;
 use yeesoft\media\widgets\TinyMce;
 use yeesoft\models\User;
-use yeesoft\block\models\Block;
 use yeesoft\widgets\ActiveForm;
 use yeesoft\widgets\LanguagePills;
 
 /* @var $this yii\web\View */
 /* @var $model yeesoft\block\models\Block */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form yeesoft\widgets\ActiveForm; */
 ?>
 
 <div class="block-form">
@@ -28,7 +26,7 @@ use yeesoft\widgets\LanguagePills;
             <div class="panel panel-default">
                 <div class="panel-body">
 
-                    <?php if (LanguageHelper::isMultilingual($model)): ?>
+                    <?php if ($model->isMultilingual()): ?>
                         <?= LanguagePills::widget() ?>
                     <?php endif; ?>
 
@@ -69,7 +67,7 @@ use yeesoft\widgets\LanguagePills;
                             </div>
 
                             <?php if (!$model->isNewRecord): ?>
-                                <?= $form->field($model, 'created_by')->dropDownList(User::getUsersList(), ['class' => '']) ?>
+                                <?= $form->field($model, 'created_by')->dropDownList(User::getUsersList()) ?>
                             <?php endif; ?>
 
                         <?php endif; ?>
