@@ -31,7 +31,7 @@ use yeesoft\widgets\LanguagePills;
 
                     <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'content')->textarea(['rows' => 6]); ?>
+                    <?= $form->field($model, 'content')->textarea(['rows' => 20]); ?>
 
                 </div>
             </div>
