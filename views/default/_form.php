@@ -1,7 +1,6 @@
 <?php
 
 use yeesoft\helpers\Html;
-use yeesoft\media\widgets\TinyMce;
 use yeesoft\models\User;
 use yeesoft\widgets\ActiveForm;
 use yeesoft\widgets\LanguagePills;
@@ -15,9 +14,9 @@ use yeesoft\widgets\LanguagePills;
 
     <?php
     $form = ActiveForm::begin([
-            'id' => 'block-form',
-            'validateOnBlur' => false,
-        ])
+                'id' => 'block-form',
+                'validateOnBlur' => false,
+            ])
     ?>
 
     <div class="row">
@@ -32,7 +31,7 @@ use yeesoft\widgets\LanguagePills;
 
                     <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'content')->widget(TinyMce::className()); ?>
+                    <?= $form->field($model, 'content')->textarea(['rows' => 6]); ?>
 
                 </div>
             </div>
@@ -87,7 +86,7 @@ use yeesoft\widgets\LanguagePills;
                                     ],
                                 ])
                                 ?>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -95,6 +94,6 @@ use yeesoft\widgets\LanguagePills;
         </div>
     </div>
 
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 </div>
