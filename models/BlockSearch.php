@@ -1,8 +1,7 @@
 <?php
 
-namespace yeesoft\block\models\search;
+namespace yeesoft\block\models;
 
-use yeesoft\block\models\Block;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -20,8 +19,16 @@ class BlockSearch extends Block
     {
         return [
             [['id', 'created_by', 'created_at', 'updated_at', 'updated_by'], 'integer'],
-            [['slug', 'content'], 'safe'],
+            [['slug', 'content', 'title'], 'string'],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function formName()
+    {
+        return '';
     }
 
     /**
@@ -42,7 +49,7 @@ class BlockSearch extends Block
      */
     public function search($params)
     {
-        $query = Block::find()->joinWith('translations');
+        $query = parent::find()->joinWith('translations');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -71,9 +78,10 @@ class BlockSearch extends Block
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
-        
+
         $query->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'content', $this->content]);
+                ->andFilterWhere(['like', 'title', $this->title])
+                ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;
     }

@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m160418_150101_create_block_table extends Migration
+class m160418_150101_block_table extends Migration
 {
 
     const TABLE_NAME = '{{%block}}';
@@ -17,7 +17,7 @@ class m160418_150101_create_block_table extends Migration
 
         $this->createTable(self::TABLE_NAME, [
             'id' => $this->primaryKey(),
-            'slug' => $this->string(200)->notNull(),
+            'slug' => $this->string(127)->notNull(),
             'created_by' => $this->integer(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
@@ -32,6 +32,7 @@ class m160418_150101_create_block_table extends Migration
         $this->createTable(self::TABLE_LANG_NAME, [
             'id' => $this->primaryKey(),
             'block_id' => $this->integer()->notNull(),
+            'title' => $this->string(127)->notNull(),
             'language' => $this->string(6)->notNull(),
             'content' => $this->text(),
         ], $tableOptions);

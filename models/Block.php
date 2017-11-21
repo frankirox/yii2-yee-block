@@ -2,19 +2,20 @@
 
 namespace yeesoft\block\models;
 
-use yeesoft\behaviors\MultilingualBehavior;
-use yeesoft\models\OwnerAccess;
-use yeesoft\models\User;
 use Yii;
+use yeesoft\models\User;
+use yeesoft\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yeesoft\db\ActiveRecord;
+use yeesoft\behaviors\MultilingualBehavior;
+use yeesoft\multilingual\db\MultilingualLabelsTrait;
 
 /**
  * This is the model class for table "{{%block}}".
  *
  * @property integer $id
  * @property string $slug
+ * @property string $title
  * @property string $content
  * @property integer $created_by
  * @property integer $created_at
@@ -24,8 +25,10 @@ use yeesoft\db\ActiveRecord;
  * @property User $createdBy
  * @property User $updatedBy
  */
-class Block extends ActiveRecord implements OwnerAccess
+class Block extends ActiveRecord
 {
+
+    use MultilingualLabelsTrait;
 
     /**
      * @inheritdoc
@@ -45,10 +48,9 @@ class Block extends ActiveRecord implements OwnerAccess
             BlameableBehavior::className(),
             'multilingual' => [
                 'class' => MultilingualBehavior::className(),
-                'langForeignKey' => 'block_id',
-                'tableName' => "{{%block_lang}}",
+                'languageForeignKey' => 'block_id',
                 'attributes' => [
-                    'content',
+                    'title', 'content',
                 ]
             ],
         ];
@@ -63,7 +65,7 @@ class Block extends ActiveRecord implements OwnerAccess
             [['content'], 'string'],
             [['created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['slug'], 'string', 'max' => 200],
+            [['slug', 'title'], 'string', 'max' => 127],
             [['slug'], 'unique'],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
@@ -78,11 +80,15 @@ class Block extends ActiveRecord implements OwnerAccess
         return [
             'id' => Yii::t('yee', 'ID'),
             'slug' => Yii::t('yee', 'Slug'),
+            'title' => Yii::t('yee', 'Title'),
             'content' => Yii::t('yee', 'Content'),
             'created_by' => Yii::t('yee', 'Author'),
             'updated_by' => Yii::t('yee', 'Updated By'),
             'created_at' => Yii::t('yee', 'Created'),
             'updated_at' => Yii::t('yee', 'Updated'),
+            'updatedByName' => Yii::t('yee', 'Updated By'),
+            'createdDatetime' => Yii::t('yee', 'Created'),
+            'updatedDatetime' => Yii::t('yee', 'Updated'),
         ];
     }
 
@@ -96,26 +102,25 @@ class Block extends ActiveRecord implements OwnerAccess
     }
 
     public static function getHtml($slug, $variables = [], $defaultValue = null)
-    { 
-        if($block = self::findOne(['slug' => $slug])){
-            
+    {
+        if ($block = self::findOne(['slug' => $slug])) {
+
             $content = $block->content;
-            
-            if (is_array($variables) && !empty(is_array($variables))){
-                $keys = array_map(function($var){
+
+            if (is_array($variables) && !empty(is_array($variables))) {
+                $keys = array_map(function($var) {
                     return '{{' . $var . '}}';
                 }, array_keys($variables));
 
-                $content= str_replace($keys, $variables, $content);
+                $content = str_replace($keys, $variables, $content);
             }
-            
+
             return $content;
         }
-        
-        return $defaultValue; 
+
+        return $defaultValue;
     }
-    
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -130,6 +135,11 @@ class Block extends ActiveRecord implements OwnerAccess
     public function getUpdatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
+    }
+
+    public function getUpdatedByName()
+    {
+        return $this->updatedBy->username;
     }
 
     public function getCreatedDate()
@@ -162,21 +172,4 @@ class Block extends ActiveRecord implements OwnerAccess
         return "{$this->updatedDate} {$this->updatedTime}";
     }
 
-    /**
-     *
-     * @inheritdoc
-     */
-    public static function getFullAccessPermission()
-    {
-        return 'fullBlockAccess';
-    }
-
-    /**
-     *
-     * @inheritdoc
-     */
-    public static function getOwnerField()
-    {
-        return 'created_by';
-    }
 }
