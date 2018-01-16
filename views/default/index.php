@@ -8,7 +8,7 @@ use yeesoft\block\models\Block;
 
 /* @var $this yii\web\View */
 /* @var $searchModel yeesoft\block\models\BlockSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $dataProvider yeesoft\data\ActiveDataProvider */
 
 $this->title = Yii::t('yee/block', 'HTML Blocks');
 $this->params['breadcrumbs'][] = $this->title;
