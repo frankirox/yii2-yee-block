@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link http://www.yee-soft.com/
  * @copyright Copyright (c) 2015 Taras Makitra
@@ -14,10 +15,6 @@ namespace yeesoft\block;
  */
 class BlockModule extends \yii\base\Module
 {
-    /**
-     * Version number of the module.
-     */
-    const VERSION = '0.2.0';
 
     public $controllerNamespace = 'yeesoft\block\controllers';
 

@@ -14,12 +14,6 @@ class BlockQuery extends \yii\db\ActiveQuery
 
     use MultilingualTrait;
 
-    public function active()
-    {
-        $this->andWhere(['status' => Page::STATUS_PUBLISHED]);
-        return $this;
-    }
-
     /**
      * @inheritdoc
      * @return Block[]|array

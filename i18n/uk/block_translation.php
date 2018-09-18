@@ -2,7 +2,7 @@
 
 return [
     'yee/block' => [
-        'HTML Block' => '',
-        'HTML Blocks' => '',
+        'HTML Block' => 'HTML Блок',
+        'HTML Blocks' => 'HTML Блоки',
     ]
 ];

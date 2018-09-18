@@ -12,8 +12,7 @@ use yeesoft\block\models\Block;
 
 $this->title = Yii::t('yee/block', 'HTML Blocks');
 $this->params['breadcrumbs'][] = $this->title;
-$this->params['description'] = 'YeeCMS 0.2.0';
-$this->params['header-content'] = Html::a(Yii::t('yee', 'Add New'), ['create'], ['class' => 'btn btn-sm btn-primary']);
+$this->params['actions'] = Html::a(Yii::t('yee', 'Add New'), ['create'], ['class' => 'btn btn-sm btn-primary']);
 ?>
 <div class="box box-primary">
     <div class="box-body">
@@ -37,7 +36,7 @@ $this->params['header-content'] = Html::a(Yii::t('yee', 'Add New'), ['create'], 
                 ],
                 [
                     'attribute' => 'slug',
-                    'options' => ['style' => 'width:20%x'],
+                    'options' => ['style' => 'width:30%'],
                 ],
                 [
                     'attribute' => 'created_by',
@@ -47,7 +46,7 @@ $this->params['header-content'] = Html::a(Yii::t('yee', 'Add New'), ['create'], 
                     },
                     'format' => 'raw',
                     'visible' => Yii::$app->user->can('view-users'),
-                    'options' => ['style' => 'width:15%'],
+                    'options' => ['style' => 'width:20%'],
                 ],
             ],
         ]);

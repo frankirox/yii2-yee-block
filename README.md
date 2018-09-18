@@ -6,7 +6,7 @@
 
 This module is part of Yee CMS (based on Yii2 Framework).
 
-Block module lets you easily create HTML blocks on your site. 
+Block module lets you easily create and use HTML or text blocks on your site. 
 
 Installation
 ------------
@@ -54,7 +54,7 @@ use yeesoft\block\models\Block;
 - Render HTML Block by slug:
 
 ```php
-echo Block::getHtml('block-slug'); 
+echo Block::render('block-slug'); 
 ```
 
 - You can use variables in your HTML Blocks. Example:
@@ -68,6 +68,6 @@ echo Block::getHtml('block-slug');
   
   render block with variables:
 ```php
-echo Block::getHtml('block-slug', ['link' => 'http://www.example.com/', 'title' => 'Example Site']); 
+echo Block::render('block-slug', ['link' => 'http://www.example.com/', 'title' => 'Example Site']); 
 ```
 

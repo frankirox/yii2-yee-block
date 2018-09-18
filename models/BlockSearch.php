@@ -66,8 +66,6 @@ class BlockSearch extends Block
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
@@ -80,8 +78,8 @@ class BlockSearch extends Block
         ]);
 
         $query->andFilterWhere(['like', 'slug', $this->slug])
-                ->andFilterWhere(['like', 'title', $this->title])
-                ->andFilterWhere(['like', 'content', $this->content]);
+            ->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;
     }

@@ -2,6 +2,8 @@
 
 namespace yeesoft\block\controllers;
 
+use yeesoft\block\models\Block;
+use yeesoft\block\models\BlockSearch;
 use yeesoft\controllers\CrudController;
 
 /**
@@ -10,8 +12,8 @@ use yeesoft\controllers\CrudController;
 class DefaultController extends CrudController
 {
 
-    public $modelClass = 'yeesoft\block\models\Block';
-    public $modelSearchClass = 'yeesoft\block\models\BlockSearch';
+    public $modelClass = Block::class;
+    public $modelSearchClass = BlockSearch::class;
 
     /**
      * @inheritdoc
@@ -21,10 +23,8 @@ class DefaultController extends CrudController
         switch ($action) {
             case 'update':
                 return ['update', 'id' => $model->id];
-                break;
             case 'create':
                 return ['update', 'id' => $model->id];
-                break;
             default:
                 return parent::getRedirectPage($action, $model);
         }

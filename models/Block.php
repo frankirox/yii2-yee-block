@@ -44,10 +44,10 @@ class Block extends ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
-            BlameableBehavior::className(),
+            TimestampBehavior::class,
+            BlameableBehavior::class,
             'multilingual' => [
-                'class' => MultilingualBehavior::className(),
+                'class' => MultilingualBehavior::class,
                 'languageForeignKey' => 'block_id',
                 'attributes' => [
                     'title', 'content',
@@ -63,12 +63,12 @@ class Block extends ActiveRecord
     {
         return [
             [['content'], 'string'],
-            [['created_by', 'updated_by'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
             [['slug', 'title'], 'string', 'max' => 127],
+            [['slug', 'title'], 'required'],
             [['slug'], 'unique'],
-            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
-            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
+            [['created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
         ];
     }
 
@@ -101,14 +101,23 @@ class Block extends ActiveRecord
         return new BlockQuery(get_called_class());
     }
 
-    public static function getHtml($slug, $variables = [], $defaultValue = null)
+    /**
+     * Renders a block and replaces block variables with values.
+     *
+     * @param string $slug the slug of block
+     * @param array $variables an array of variables to be replaced in the block template
+     * @param string $default default value to be returned if block with slug not found
+     * @return string
+     */
+    public static function render($slug, $variables = [], $default = null)
     {
-        if ($block = self::findOne(['slug' => $slug])) {
+        $block = self::findOne(['slug' => $slug]);
 
+        if ($block) {
             $content = $block->content;
 
             if (is_array($variables) && !empty(is_array($variables))) {
-                $keys = array_map(function($var) {
+                $keys = array_map(function ($var) {
                     return '{{' . $var . '}}';
                 }, array_keys($variables));
 
@@ -118,7 +127,7 @@ class Block extends ActiveRecord
             return $content;
         }
 
-        return $defaultValue;
+        return $default;
     }
 
     /**
@@ -126,7 +135,7 @@ class Block extends ActiveRecord
      */
     public function getAuthor()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     /**
@@ -134,7 +143,7 @@ class Block extends ActiveRecord
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
     public function getUpdatedByName()
@@ -164,12 +173,12 @@ class Block extends ActiveRecord
 
     public function getCreatedDatetime()
     {
-        return "{$this->createdDate} {$this->createdTime}";
+        return $this->createdDate . ' ' . $this->createdTime;
     }
 
     public function getUpdatedDatetime()
     {
-        return "{$this->updatedDate} {$this->updatedTime}";
+        return $this->updatedDate . ' ' . $this->updatedTime;
     }
 
 }
